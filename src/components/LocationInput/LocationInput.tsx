@@ -84,7 +84,7 @@ const LocationInput: React.FC<LocationInputProps> = ({
       </Typography>
       <Box component="form" noValidate autoComplete="off">
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={4}>
+          <Grid size={{ xs: 12, sm: 4 }}>
             <TextField
               label="Location Name"
               variant="outlined"
@@ -94,7 +94,7 @@ const LocationInput: React.FC<LocationInputProps> = ({
               placeholder="e.g., Office, Home"
             />
           </Grid>
-          <Grid item xs={12} sm={3}>
+          <Grid size={{ xs: 12, sm: 3 }}>
             <TextField
               label="Latitude"
               variant="outlined"
@@ -106,7 +106,7 @@ const LocationInput: React.FC<LocationInputProps> = ({
               inputProps={{ step: 'any' }}
             />
           </Grid>
-          <Grid item xs={12} sm={3}>
+          <Grid size={{ xs: 12, sm: 3 }}>
             <TextField
               label="Longitude"
               variant="outlined"
@@ -118,7 +118,7 @@ const LocationInput: React.FC<LocationInputProps> = ({
               inputProps={{ step: 'any' }}
             />
           </Grid>
-          <Grid item xs={12} sm={2}>
+          <Grid size={{ xs: 12, sm: 2 }}>
             <Button
               variant="contained"
               color="primary"

@@ -58,7 +58,7 @@ const Dashboard: React.FC = () => {
       </Paper>
 
       <Grid container spacing={4}>
-        <Grid item xs={12} md={5}>
+        <Grid size={{ xs: 12, md: 5 }}>
           <LocationInput
             locations={locations}
             onAddLocation={handleAddLocation}
@@ -93,7 +93,7 @@ const Dashboard: React.FC = () => {
           )}
         </Grid>
 
-        <Grid item xs={12} md={7}>
+        <Grid size={{ xs: 12, md: 7 }}>
           <Paper elevation={3} sx={{ p: 2 }}>
             <Typography variant="h6" gutterBottom>
               Map View
