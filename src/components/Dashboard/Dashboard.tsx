@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Box, Container, Typography, Paper, Grid, CircularProgress } from '@mui/material';
 import Map from '../Map/Map';
 import LocationInput from '../LocationInput/LocationInput';
-import { calculateOptimalPath } from '../../utils/qaoa';
+import { fetchOsrmRoute, OsrmRouteResult } from '../../utils/mapboxRoute';
+// ...existing code...
 
 interface Location {
   id: string;
@@ -13,6 +14,8 @@ interface Location {
 const Dashboard: React.FC = () => {
   const [locations, setLocations] = useState<Location[]>([]);
   const [optimizedPath, setOptimizedPath] = useState<Location[]>([]);
+  const [routePolyline, setRoutePolyline] = useState<[number, number][]>([]);
+  const [totalDistance, setTotalDistance] = useState<number>(0);
   const [isCalculating, setIsCalculating] = useState(false);
 
   const handleAddLocation = (location: Omit<Location, 'id'>) => {
@@ -36,9 +39,11 @@ const Dashboard: React.FC = () => {
 
     setIsCalculating(true);
     try {
-      // Simulate calculation delay (in a real app, this would be an API call or actual computation)
-      const result = await calculateOptimalPath(locations);
-      setOptimizedPath(result);
+      // Fetch route from OSRM public API
+      const result: OsrmRouteResult = await fetchOsrmRoute(locations);
+      setRoutePolyline(result.polyline);
+      setTotalDistance(result.distance);
+      setOptimizedPath(locations);
     } catch (error) {
       console.error('Error calculating path:', error);
     } finally {
@@ -50,10 +55,10 @@ const Dashboard: React.FC = () => {
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          Quantum Path Planner
+          Route Planner
         </Typography>
         <Typography variant="subtitle1" color="textSecondary" gutterBottom>
-          Optimize travel routes using Quantum Approximate Optimization Algorithm (QAOA)
+          Optimize travel routes using real-world road routing
         </Typography>
       </Paper>
 
@@ -70,7 +75,7 @@ const Dashboard: React.FC = () => {
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
               <CircularProgress />
               <Typography variant="body2" sx={{ ml: 2 }}>
-                Calculating optimal path using QAOA...
+                Calculating optimal route using road network...
               </Typography>
             </Box>
           )}
@@ -79,6 +84,9 @@ const Dashboard: React.FC = () => {
             <Paper elevation={3} sx={{ p: 3, mt: 3 }}>
               <Typography variant="h6" gutterBottom>
                 Optimized Path
+              </Typography>
+              <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
+                Total Distance: {(totalDistance / 1000).toFixed(2)} km
               </Typography>
               <Box component="ol" sx={{ pl: 2 }}>
                 {optimizedPath.map((location, index) => (
@@ -101,6 +109,7 @@ const Dashboard: React.FC = () => {
             <Map 
               locations={locations} 
               path={optimizedPath.length > 0 ? optimizedPath : []}
+              routePolyline={routePolyline}
             />
           </Paper>
         </Grid>

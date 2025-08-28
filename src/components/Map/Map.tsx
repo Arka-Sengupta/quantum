@@ -20,10 +20,11 @@ interface Location {
 
 interface MapProps {
   locations: Location[];
+  routePolyline?: [number, number][]; // Array of [lat, lng] from OSRM
   path: Location[];
 }
 
-const Map: React.FC<MapProps> = ({ locations, path }) => {
+const Map: React.FC<MapProps> = ({ locations, path, routePolyline }) => {
   const [center, setCenter] = useState<[number, number]>([20.5937, 78.9629]); // Default center (India)
   const [zoom, setZoom] = useState(5);
 
@@ -35,8 +36,10 @@ const Map: React.FC<MapProps> = ({ locations, path }) => {
     }
   }, [locations]);
 
-  // Create path coordinates for the polyline
-  const pathPositions = path.map(location => location.coordinates);
+  // If routePolyline is provided, use it for the polyline; otherwise, use straight lines between locations
+  const pathPositions = routePolyline && routePolyline.length > 1
+    ? routePolyline
+    : path.map(location => location.coordinates);
 
   return (
     <Box sx={{ height: '500px', width: '100%', borderRadius: '8px', overflow: 'hidden' }}>

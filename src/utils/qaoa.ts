@@ -1,3 +1,34 @@
+// Build a graph from OSM road data (GeoJSON from Overpass API)
+
+export function buildGraph(osmData: any): Record<string, Record<string, number>> {
+  const nodes: Record<string, [number, number]> = {};
+  const graph: Record<string, Record<string, number>> = {};
+
+  // Extract nodes
+  for (const element of osmData.elements) {
+    if (element.type === 'node') {
+      nodes[element.id] = [element.lat, element.lon];
+    }
+  }
+
+  // Extract edges from ways
+  for (const element of osmData.elements) {
+    if (element.type === 'way' && element.nodes) {
+      for (let i = 0; i < element.nodes.length - 1; i++) {
+        const a = element.nodes[i];
+        const b = element.nodes[i + 1];
+        if (nodes[a] && nodes[b]) {
+          const dist = calculateDistance(nodes[a], nodes[b]);
+          if (!graph[a]) graph[a] = {};
+          if (!graph[b]) graph[b] = {};
+          graph[a][b] = dist;
+          graph[b][a] = dist; // bidirectional
+        }
+      }
+    }
+  }
+  return graph;
+}
 /**
  * Quantum Approximate Optimization Algorithm (QAOA) simulation for path planning
  * 
@@ -15,7 +46,7 @@ interface Location {
 /**
  * Calculate distance between two geographic coordinates using the Haversine formula
  */
-function calculateDistance(coord1: [number, number], coord2: [number, number]): number {
+export function calculateDistance(coord1: [number, number], coord2: [number, number]): number {
   const [lat1, lon1] = coord1;
   const [lat2, lon2] = coord2;
   
@@ -33,6 +64,24 @@ function calculateDistance(coord1: [number, number], coord2: [number, number]): 
   
   return distance;
 }
+
+  // Fetch road data from OpenStreetMap Overpass API as GeoJSON
+  export async function fetchRoadsGeoJSON(bbox: [number, number, number, number]): Promise<any> {
+      // bbox: [south, west, north, east]
+      const query = `
+          [out:json];
+          (
+            way["highway"](${bbox[0]},${bbox[1]},${bbox[2]},${bbox[3]});
+          );
+          out body;
+          >;
+          out skel qt;
+      `;
+      const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Failed to fetch OSM data');
+      return await response.json();
+  }
 
 /**
  * Create a distance matrix between all locations
