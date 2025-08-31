@@ -25,14 +25,12 @@ interface LocationInputProps {
   locations: Location[];
   onAddLocation: (location: Omit<Location, 'id'>) => void;
   onRemoveLocation: (id: string) => void;
-  onCalculatePath: () => void;
 }
 
 const LocationInput: React.FC<LocationInputProps> = ({
   locations,
   onAddLocation,
-  onRemoveLocation,
-  onCalculatePath
+  onRemoveLocation
 }) => {
   const [name, setName] = useState('');
   const [latitude, setLatitude] = useState('');
@@ -164,15 +162,7 @@ const LocationInput: React.FC<LocationInputProps> = ({
                 </React.Fragment>
               ))}
             </List>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={onCalculatePath}
-              disabled={locations.length < 2}
-              sx={{ mt: 2 }}
-            >
-              Calculate Optimal Path
-            </Button>
+            {/* Removed Calculate Optimal Path button */}
           </>
         ) : (
           <Typography variant="body2" color="textSecondary">
