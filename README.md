@@ -1,46 +1,47 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Qryptix QAOA Based Route Planner
 
-## Available Scripts
+A modern web dashboard for route planning using the Quantum Approximate Optimization Algorithm (QAOA) and real-world road routing APIs. Built with React, Framer Motion, Leaflet, and OSRM.
 
-In the project directory, you can run:
+## Features
+- Add, remove, and manage multiple locations
+- Calculate optimized route using QAOA principles and OSRM road network
+- View route and waypoints on an interactive map
+- Animated, beautiful UI with Framer Motion
+- Displays total route distance
+- Toast notifications for actions and errors
 
-### `npm start`
+## How It Works
+This dashboard simulates QAOA-based path planning by leveraging classical routing APIs (OSRM) for real-world navigation. The UI and logic are designed to be extensible for future quantum integration.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **Input**: Add locations with name, latitude, and longitude
+- **Routing**: When you click "Calculate Route", the app queries OSRM for the shortest road route between all waypoints
+- **Output**: The optimized route is displayed on the map, with total distance and ordered waypoints
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Getting Started
 
-### `npm test`
+1. **Install dependencies**
+	```sh
+	npm install
+	```
+2. **Start the development server**
+	```sh
+	npm start
+	```
+3. **Open the app**
+	Visit [http://localhost:3000](http://localhost:3000) in your browser
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Usage
+- Add at least two locations using the form
+- Click "Calculate Route" to view the optimized path
+- View the route, waypoints, and total distance on the dashboard
 
-### `npm run build`
+## Technologies Used
+- React & TypeScript
+- Framer Motion (animations)
+- Material UI (design)
+- Leaflet (map)
+- OSRM (routing API)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Extending for Quantum Computing
+This app is designed to be extensible for future integration with quantum algorithms and QAOA solvers. The current routing logic uses classical APIs, but the UI and structure can be adapted for quantum backends.
